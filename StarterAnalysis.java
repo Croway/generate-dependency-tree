@@ -4,7 +4,6 @@
 //DEPS org.apache.maven:maven-model:3.8.6
 //DEPS org.apache.maven:maven-settings:3.8.6
 
-
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -63,8 +62,6 @@ class StarterAnalysis implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception { // your business logic goes here...
-        System.setProperty("maven.home", "/home/federico/.sdkman/candidates/maven/current");
-
         Model pom = loadPom(Paths.get(pomLocation));
 
         Model result = new Model();

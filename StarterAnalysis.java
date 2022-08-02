@@ -54,6 +54,9 @@ class StarterAnalysis implements Callable<Integer> {
 
     @Option(names = {"-output"}, description = "Dependency Tree file name")
     private String depTreeFileName;
+        
+    @Option(names = {"-maven-home"}, description = "Maven home")
+    private String mavenHome;
 
     public static void main(String... args) {
         int exitCode = new CommandLine(new StarterAnalysis()).execute(args);
@@ -61,7 +64,9 @@ class StarterAnalysis implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() throws Exception { // your business logic goes here...
+    public Integer call() throws Exception {
+        System.setProperty("maven.home", mavenHome);
+            
         Model pom = loadPom(Paths.get(pomLocation));
 
         Model result = new Model();

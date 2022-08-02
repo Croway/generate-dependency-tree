@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
@@ -91,7 +92,7 @@ class StarterAnalysis implements Callable<Integer> {
         result.setDependencyManagement(dependencyManagement);
         result.setModelVersion("4.0.0");
 
-        Map<String, List<String>> map = new HashMap<>();
+        Map<String, List<String>> map = new ConcurrentHashMap<>(500);
         Invoker invoker = new DefaultInvoker();
         pom.getDependencies().parallelStream()
         .forEach(dependency -> {
@@ -129,6 +130,10 @@ class StarterAnalysis implements Callable<Integer> {
 
         map.entrySet().forEach(entry -> {
             try {
+                if (!Files.exists(Paths.get(depTreeFileName))) {
+                    Files.createFile(Paths.get(depTreeFileName));
+                }
+
                 Files.write(Paths.get(depTreeFileName), entry.getValue(), Charset.defaultCharset(), StandardOpenOption.APPEND);
             } catch (Exception e) {
                 throw new RuntimeException(e);

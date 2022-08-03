@@ -22,7 +22,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -115,6 +114,7 @@ class StarterAnalysis implements Callable<Integer> {
             InvocationRequest request = new DefaultInvocationRequest();
             request.setPomFile(new File(dependency.getArtifactId() + ".xml"));
             request.setGoals(Collections.singletonList( "dependency:tree" ));
+            request.setNoTransferProgress(true);
             request.setOutputHandler(new ListCustomHandler(output));    
             request.setInputStream(InputStream.nullInputStream());
             
